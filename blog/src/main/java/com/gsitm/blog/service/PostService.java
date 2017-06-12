@@ -23,4 +23,6 @@ public interface PostService {
 	* @description : getPosts 함수 선언
 	 */
 	public List<Post> getPosts();
+	
+	public void savePost(Post post);
 }

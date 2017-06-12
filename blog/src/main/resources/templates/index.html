@@ -1,10 +1,71 @@
 <!DOCTYPE html>
-<html>
+<!-- 타임리프 네임스페이스를 지정해줌 -->
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="EUC-KR">
-<title>Insert title here</title>
+<meta charset="UTF-8">
+<title>블로그</title>
+<link rel="stylesheet" href="/webjars/bootstrap/3.3.4/dist/css/bootstrap.css">
 </head>
 <body>
-
+	<div class="container">
+		<form action="#" method="Post" id="mainForm">
+			<!-- layout -->
+			<table class="table table-hover table-striped">
+				<thead>
+					<tr>
+						<th colspan="4" class="text-center">
+							<h1><span>글 목록</span></h1>
+						</th>
+					</tr>
+					<tr>
+						<td><span>번호</span></td>
+						<td><span>제목</span></td>
+						<td><span>내용</span></td>
+						<td><span>작성 시간</span></td>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- 글 내용이 반복문을 통해서 나와야 함 -->
+					<!-- ${posts}를 가지고 와서 post로 하나씩 출력해주겠다 -->
+					<tr th:each="post: ${posts}">
+						<td th:text="${post.id}">번호</td>
+						<td th:text="${post.title}">제목</td>
+						<td th:text="${post.content}">내용</td>
+						<td th:text="${post.createdBy}">작성 시간</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="4" class="text-right"><button class="btn btn-default" type="button" id="write">글 쓰기</button></td>
+					</tr>
+				</tfoot>
+			</table>
+			<!-- layout End-->
+		</form>
+	</div>
 </body>
+
+<script src="/webjars/jquery/2.1.3/dist/jquery.js"></script>
+<script src="/webjars/bootstrap/3.3.4/dist/js/bootstrap.js"></script>
+<script>
+	$(document).ready(function(){
+		
+		/*
+		글 쓰기 버튼 클릭 시 글 쓰는 화면으로 폼 이동
+		*/
+		$(document).on('click','#write',function(){
+			console.log("글 쓰기");
+			location.href="/board/write";
+		});
+		
+		/*
+		tr 클릭하면 그 자식 노드의 Id를 가지고 값을 찾아야함
+		*/
+		$(document).on('click','#write',function(){
+			console.log("글 쓰기");
+			location.href="/board/write";
+		});
+		
+	});
+</script>
 </html>

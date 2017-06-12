@@ -1,6 +1,8 @@
 package com.gsitm.blog.repository;
 
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import com.gsitm.blog.model.Post;
@@ -14,7 +16,9 @@ import com.gsitm.blog.model.Post;
 * @description : JPA 상속하여 DB 중 POST table의 Long type을 담음
 * --추가설명이 필요함 아직 잘 모르겠음.
  */
+
+//CRUD 기능을 할 수 있게 해주는 어노테이션,DAO CLASS
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
-
+	public List<Post> findTop3ByOrderByIdDesc();
 }

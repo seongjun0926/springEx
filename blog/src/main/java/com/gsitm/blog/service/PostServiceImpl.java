@@ -2,11 +2,15 @@ package com.gsitm.blog.service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gsitm.blog.model.Post;
 import com.gsitm.blog.repository.PostRepository;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 
@@ -17,6 +21,7 @@ import com.gsitm.blog.repository.PostRepository;
 * @description : PostService를 구현
  */
 @Service
+@Slf4j
 public class PostServiceImpl implements PostService {
 	
 	@Autowired
@@ -31,6 +36,15 @@ public class PostServiceImpl implements PostService {
 	*/
 	@Override
 	public List<Post> getPosts() {
-		return postRepository.findAll();
+		return postRepository.findTop3ByOrderByIdDesc();
 	}
+	
+	@Transactional
+	@Override
+	public void savePost(Post post) {
+		log.debug(post.toString());
+		postRepository.save(post);
+	}
+	
+	
 }

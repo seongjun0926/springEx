@@ -1,10 +1,9 @@
 package com.gsitm.blog.repository;
 
 
-import java.util.List;
-
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
+
 import com.gsitm.blog.model.Post;
 
 /**
@@ -19,6 +18,6 @@ import com.gsitm.blog.model.Post;
 
 //CRUD 기능을 할 수 있게 해주는 어노테이션,DAO CLASS
 @Repository
-public interface PostRepository extends JpaRepository<Post, Long> {
-	public List<Post> findTop3ByOrderByIdDesc();
+public interface PostRepository extends PagingAndSortingRepository<Post, Long> {
+
 }

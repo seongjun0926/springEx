@@ -23,6 +23,7 @@ import lombok.Data;
 * @description : POST라는 테이블을 만들어서 ID, title, content라는 레코드 생성
  */
 @Entity
+/*@Data 롬복에서 getter, setter 파일을 자동생성*/
 @Data
 public class Post {
 	

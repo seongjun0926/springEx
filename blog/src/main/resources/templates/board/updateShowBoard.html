@@ -6,9 +6,8 @@
 <link rel="stylesheet" href="/webjars/bootstrap/3.3.4/dist/css/bootstrap.css">
 </head>
 <body>
-	<form method="POST" id="writeForm" action="#" th:object="${post}">
-<!-- 		<input type="hidden" name="_method" th:if="${id != null}" th:value="PUT">
- -->		<div class="container">
+	<form method="POST" id="writeForm" action="#" th:action="@{/board/saveBoard}" th:object="${post}">
+		<div class="container">
 			<table class="table">
 				<thead>
 					<tr>
@@ -19,8 +18,7 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td>	
-							<input type="hidden" id="postId" name="id" th:field="*{id}"/>
+						<td>
 							<input type="text" name="title" class="form-control" placeholder="제목" th:field="*{title}" />
 							<!-- input 값에 아무것도 안들어가면 에러메시지 띄움-->
 							<span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
@@ -53,14 +51,7 @@
 			saveBtn 버튼을 누르면 글 저장하는 화면으로 이동하기
 			 */
 			$('#saveBtn').on('click', function() {
-				$postId = $('#postId').val();
 				console.log("글 저장");
-				console.log($postId);
-				if(!$postId){
-					$('#writeForm').attr("action","/board/saveBoard");
-				}else{
-					$('#writeForm').attr("action","/board/updateBoard");
-				}
 				$('#writeForm').submit();
 			});
 		});

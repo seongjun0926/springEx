@@ -1,7 +1,6 @@
 package com.gsitm.blog.service;
 
 import java.util.List;
-
 import com.gsitm.blog.model.Post;
 
 /**

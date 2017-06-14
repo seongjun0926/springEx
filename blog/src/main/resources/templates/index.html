@@ -23,8 +23,8 @@
 							<tr class="trPostId" th:each="post: ${posts}" style="cursor:pointer">
 								<td class="text-left">
 								
-									<input type="text" th:field="${post.id}"/>
-									<span th:text="${post.id}"></span> -->
+									<!-- <input type="text" th:field="${post.id}"/> -->
+									<span id="listOfPostId" th:text="${post.id}"></span>
 									<span th:text="${post.title}">제목</span>
 									<span th:text="${post.createdBy}">작성 시간</span>
 								</td>
@@ -39,18 +39,18 @@
 						<tr>
 							<td class="text-left col-xs-2">
 								<h3 style="color: gainsboro;">
-									<span th:text="${oneOfPost.id}">글 번호</span>
+									<span id="valiableId" th:text="${oneOfPost.id}">글 번호</span>
 									<input type="hidden" id="postId" th:field="${oneOfPost.id}"/>
 								</h3>
 							</td>
 							<td class="text-center col-xs-8">
 								<h3 style="color: cadetblue;">
-									<span th:text="${oneOfPost.title}">제목</span>
+									<span id="valiableTitle" th:text="${oneOfPost.title}">제목</span>
 								</h3>
 							</td>
 							<td class="text-right col-xs-2">
 								<h3 style="color: gainsboro;">
-									<span th:text="${oneOfPost.createdBy}">작성시간</span>
+									<span id="valiableCreatedBy" th:text="${oneOfPost.createdBy}">작성시간</span>
 								</h3>
 							</td>
 						</tr>
@@ -58,7 +58,7 @@
 					<tbody class="text-center">
 						<tr>
 							<td colspan="3">
-								<h2><span th:text="${oneOfPost.content}">글 내용</span></h2>
+								<h2><span id="valiableContent" th:text="${oneOfPost.content}">글 내용</span></h2>
 							</td>
 						</tr>
 					</tbody>
@@ -104,6 +104,7 @@
 		$(document).on('click','#fixPost',function(){
 			console.log("글 수정");
 			var $postId= $('#postId').val();
+			console.log($postId);
 			$('#mainForm').attr('method','GET');
 			$('#mainForm').attr('action','/board/'+$postId);
 			$('#mainForm').submit();
@@ -112,16 +113,34 @@
 		DeleteBtn 버튼을 누르면 글 삭제하기
 		*/
 		$(document).on('click','#delPost',function(){
-			console.log("글 수정");
+			console.log("글 삭제");
 			var $postId= $('#postId').val();
+			//$('#mainForm').attr('th:method','DELETE');
 			$('#mainForm').attr('method','POST');
 			$('#mainForm').attr('action','/board/deleteBoard/'+$postId);
-			$('#mainForm').submit();
+			$('#mainForm').submit(); 
 		});
 		$(document).on('click','.trPostId',function(){
 			console.log("글 보기");
-			var $postId = $(this).children('td').children('span').text();
+			var $postId = $(this).children('td').children('#listOfPostId').text();
 			console.log($postId);
+			
+			/*
+			tr 클릭하면 postId 값이 나오고 그 값을 가지고 Ajax 통신을 이용하여 홈화면에 뿌려줌
+			*/
+		    $.ajax({      
+		        type:"GET",  
+		        url:"/ajax/"+$postId,      
+		        success:function(args){  
+		             $('#valiableId').text(args.id);
+		             $('#valiableTitle').text(args.title);
+		             $('#valiableContent').text(args.content);
+		             $('#valiableCreatedBy').text(args.createdBy);
+		        },   
+		        error:function(e){  
+		              console.log("실패");
+		        }  
+		    });  
 		});
 	});
 </script>

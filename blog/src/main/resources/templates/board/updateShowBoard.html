@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="/webjars/bootstrap/3.3.4/dist/css/bootstrap.css">
 </head>
 <body>
-	<form method="POST" id="writeForm" action="#" th:object="${post}">
+	<form method="POST" id="writeForm" action="#" th:object="${post}" th:method="PUT">
 		<div class="container">
 			<table class="table">
 				<thead>
@@ -36,7 +36,7 @@
 				<tfoot>
 					<tr>
 						<td class="text-right">
-							<button class="btn btn-default" type="button" id="saveBtn">저장</button>
+							<button class="btn btn-default" type="button" id="updateBtn">저장</button>
 						</td>
 					</tr>
 				</tfoot>
@@ -51,15 +51,11 @@
 			/*
 			saveBtn 버튼을 누르면 글 저장하는 화면으로 이동하기
 			 */
-			$('#saveBtn').on('click', function() {
+			$('#updateBtn').on('click', function() {
 				$postId = $('#postId').val();
 				console.log("글 저장");
 				console.log($postId);
-				if(!$postId){
-					$('#writeForm').attr("action","/board/saveBoard");
-				}else{
-					$('#writeForm').attr("action","/board/updateBoard");
-				}
+				$('#writeForm').attr("action","/board/updateBoard");
 				$('#writeForm').submit();
 			});
 		});

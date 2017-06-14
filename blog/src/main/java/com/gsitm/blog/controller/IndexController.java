@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gsitm.blog.model.Post;
 import com.gsitm.blog.service.PostService;
@@ -52,12 +54,6 @@ public class IndexController {
 		model.addAttribute("oneOfPost", post);
 		return "index";
 	}
-
-	@GetMapping("/foo/bar")
-	public String bar() {
-		return "foo/bar";
-	}
-	
 	/**
 	 * 
 	* @tags    : @param model
@@ -89,8 +85,21 @@ public class IndexController {
 	public String wirte(Model model, @PathVariable("id") long id) {
 		Post post = postService.findOne(id);
 		model.addAttribute("post", post);
-		return "/board/write";
+		return "/board/updateShowBoard";
 	}
+	
+	/* @ResponseBody
+	 * 메소드에 @ResponseBody 로 어노테이션이 되어 있다면 메소드에서 리턴되는 값은 View 를 통해서 
+	 * 출력되지 않고 HTTP Response Body 에 직접 쓰여짐
+     * 이때 쓰여지기 전에 리턴되는 데이터 타입에 따라 MessageConverter 에서 변환이 이뤄진 후 쓰여짐
+	 * */
+	@ResponseBody
+	@GetMapping("/ajax/{id}")
+	public Post ajaxGetPost(@PathVariable("id") long id){
+		Post post = postService.findOne(id);
+		return post;
+	}
+	
 	
 	/**
 	 * 
@@ -128,7 +137,7 @@ public class IndexController {
 	* @date    : 2017. 6. 13.
 	* @description : 수정글 업데이트 하기
 	 */
-	@PostMapping("/board/updateBoard")
+	@PutMapping("/board/updateBoard")
 	public String updateBoard(@ModelAttribute @Valid Post post, BindingResult result) {
 		log.debug(post.toString());
 
@@ -151,6 +160,7 @@ public class IndexController {
 	* -@PathVariable("id")
 	*  id값을 long id 에 담고 그 id로 다른 행위를 하겠다.
 	 */
+	//@DeleteMapping
 	@PostMapping("/board/deleteBoard/{id}")
 	public String deleteBoard(@PathVariable("id") long id){
 		postService.deletePost(id);

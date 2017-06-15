@@ -23,6 +23,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.common.collect.ContiguousSet;
+import com.google.common.collect.DiscreteDomain;
+import com.google.common.collect.Range;
 import com.gsitm.blog.model.Post;
 import com.gsitm.blog.service.PostService;
 
@@ -54,11 +57,16 @@ public class IndexController {
 		//포스트들을 불러오기
 		model.addAttribute("posts", posts.getContent());
 		
+
 		//이전 내용이 있으면
 		if (posts.hasPrevious()) {
 			model.addAttribute("prev", posts.previousPageable().getPageNumber());
 		}
-		model.addAttribute("current",posts.getTotalPages());
+		int current = posts.getTotalPages();
+		if(current==0){
+			current = 1;
+		}
+		model.addAttribute("pages",ContiguousSet.create(Range.open(0, current), DiscreteDomain.integers()).asList());
 		//이후 내용이 있으면
 		if (posts.hasNext()) {
 			model.addAttribute("next", posts.nextPageable().getPageNumber());

@@ -35,8 +35,8 @@
 								<td th:if="${prev != null}">
 									<a th:href="@{/?pageNo=} + ${prev}">이전</a>
 								</td>
-								<td th:each="page:${current}">
-									<a th:href="@{/?pageNo=} + ${page}">
+								<td>
+									<a th:each="page:${pages}">
 										<span th:text="${page}"></span>
 									</a>
 								</td>

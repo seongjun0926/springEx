@@ -1,6 +1,10 @@
 package com.gsitm.blog.service;
 
 import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.gsitm.blog.model.Post;
 
 /**
@@ -21,7 +25,7 @@ public interface PostService {
 	* @date    : 2017. 6. 9.
 	* @description : getPosts 함수 선언
 	 */
-	public List<Post> getPosts();
+	public Page<Post> getPosts(Pageable page);
 	
 	/**
 	 * 

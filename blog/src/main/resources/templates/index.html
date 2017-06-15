@@ -21,7 +21,7 @@
 							<!-- 글 내용이 반복문을 통해서 나와야 함 -->
 							<!-- ${posts}를 가지고 와서 post로 하나씩 출력해주겠다 -->
 							<tr class="trPostId" th:each="post: ${posts}" style="cursor:pointer">
-								<td class="text-left">
+								<td class="text-left" colspan="3">
 								
 									<!-- <input type="text" th:field="${post.id}"/> -->
 									<span id="listOfPostId" th:text="${post.id}"></span>
@@ -30,6 +30,21 @@
 								</td>
 							</tr>
 						</tbody>
+						<tfoot>
+							<tr>
+								<td th:if="${prev != null}">
+									<a th:href="@{/?pageNo=} + ${prev}">이전</a>
+								</td>
+								<td th:each="page:${current}">
+									<a th:href="@{/?pageNo=} + ${page}">
+										<span th:text="${page}"></span>
+									</a>
+								</td>
+								<td th:if="${next != null}">
+									<a th:href="@{/?pageNo=} + ${next}">다음</a>
+								</td>
+							</tr>
+						</tfoot>
 					</table>
 					<!-- layout End-->
 			</div>

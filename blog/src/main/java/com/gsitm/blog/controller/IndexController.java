@@ -1,11 +1,17 @@
 package com.gsitm.blog.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gsitm.blog.model.Post;
@@ -30,10 +37,10 @@ public class IndexController {
 	@Autowired
 	private PostService postService;
 
-	// @RequestMapping(method = RequestMethod.GET, value = "/")
+	//@RequestMapping(method = RequestMethod.GET, value = "/")
 	// getMapping은 localhost:8080 이후의 값을 가지고 해당 함수 실
 	@GetMapping("/")
-	/**
+	/*
 	 * 
 	* @tags    : @param model
 	* @tags    : @return
@@ -43,17 +50,47 @@ public class IndexController {
 	* @description : 인덱스 화면 호출 시 post 목록들을 가져옴
 	 */
 	public String index(Model model) {
-		Post post = null;
-		List<Post> posts = postService.getPosts();
-		if(posts.size()>0){
-			post = postService.findOne(posts.get(0).getId());
-		}
+		Page<Post> posts = postService.getPosts(new PageRequest(0, 3, new Sort(Direction.DESC, "id")));
 		//포스트들을 불러오기
-		model.addAttribute("posts", posts);
-		//index 화면 띄우면서 포스트 하나 가져오기
-		model.addAttribute("oneOfPost", post);
+		model.addAttribute("posts", posts.getContent());
+		
+		//이전 내용이 있으면
+		if (posts.hasPrevious()) {
+			model.addAttribute("prev", posts.previousPageable().getPageNumber());
+		}
+		model.addAttribute("current",posts.getTotalPages());
+		//이후 내용이 있으면
+		if (posts.hasNext()) {
+			model.addAttribute("next", posts.nextPageable().getPageNumber());
+		}		
 		return "index";
 	}
+	
+	@GetMapping("/{pagingNo}")
+	/*
+	 * 
+	* @tags    : @param model
+	* @tags    : @return
+	* @author  : 손성준
+	* @version : 1.0
+	* @date    : 2017. 6. 12.
+	* @description : 인덱스 화면 호출 시 post 목록들을 가져옴
+	 */
+	public String pagingIndex(Model model, @PathVariable("pageNo") int pageNo) {
+		Page<Post> posts = postService.getPosts(new PageRequest(pageNo, 3, new Sort(Direction.DESC, "id")));
+		//포스트들을 불러오기
+		model.addAttribute("posts", posts.getContent());
+		//이전 내용이 있으면
+		if (posts.hasPrevious()) {
+			model.addAttribute("prev", posts.previousPageable().getPageNumber());
+		}
+		//이후 내용이 있으면
+		if (posts.hasNext()) {
+			model.addAttribute("next", posts.nextPageable().getPageNumber());
+		}		
+		return "index/?pageNo="+pageNo;
+	}
+
 	/**
 	 * 
 	* @tags    : @param model

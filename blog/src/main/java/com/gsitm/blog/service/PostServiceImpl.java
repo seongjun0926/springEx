@@ -42,10 +42,8 @@ public class PostServiceImpl implements PostService {
 	* @description : JPA을 상속한 postRepository에서 findAll은 select * from POST 와 같음
 	*/
 	@Override
-	public List<Post> getPosts() {
-		Pageable pageable = new PageRequest(0, 3, new Sort(Direction.DESC, "id"));
-		Page<Post> posts = postRepository.findAll(pageable);
-		return posts.getContent();
+	public Page<Post> getPosts(Pageable page) {
+		return postRepository.findAll(page);
 	}
 	
 	/*@Transactional 쿼리문이 정상적으로 완료가 되고, 처리 도중 에러가 났을 때 처리한 쿼리를 자동 rollback 해주기 위해 사용된다. 또는 commit*/
